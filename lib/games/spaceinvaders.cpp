@@ -20,8 +20,8 @@
 
 using namespace events;
 
-static uint16_t EE_highscore EEMEM = 0;
-uint16_t SpaceInvaders::highscore_ = eeprom_read_word(&EE_highscore);
+uint16_t SpaceInvaders::EE_highscore_ EEMEM = 0;
+uint16_t SpaceInvaders::highscore_ = eeprom_read_word(&EE_highscore_);
 
 static const uint16_t speeds[] PROGMEM = {
 	2000, 65, 400, 200,  // very slow
@@ -32,7 +32,12 @@ static const uint16_t speeds[] PROGMEM = {
 };
 
 SpaceInvaders::SpaceInvaders(Display* display)
-  : Game(display, SPACE_INVADERS), invaders_(StaticList<byte>(display->rows())), step_timer_(nullptr), shot_timer_(nullptr), auto_move_(nullptr), speed_(2) {
+  : Game(display, SPACE_INVADERS)
+  , invaders_(StaticList<byte>(display->rows()))
+  , step_timer_(nullptr)
+  , shot_timer_(nullptr)
+  , auto_move_(nullptr)
+  , speed_(2) {
 	// setup position
 	pos_ = 3;
 
@@ -49,7 +54,7 @@ SpaceInvaders::SpaceInvaders(Display* display)
 
 void SpaceInvaders::resetHighscore() {
 	highscore_ = 0;
-	eeprom_write_word(&EE_highscore, 0);
+	eeprom_write_word(&EE_highscore_, 0);
 }
 
 void SpaceInvaders::start(Event* event) {
@@ -68,7 +73,7 @@ void SpaceInvaders::start(Event* event) {
 void SpaceInvaders::updateHighscore(const byte offset) {
 	if (score_ > highscore_ + offset) {
 		highscore_ = score_;
-		eeprom_write_word(&EE_highscore, highscore_);
+		eeprom_write_word(&EE_highscore_, highscore_);
 		is_new_highscore_ = true;
 	}
 }

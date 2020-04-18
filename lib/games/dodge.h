@@ -18,9 +18,9 @@
 
 #pragma once
 #include <avr.h>
+#include <buttonautotrigger.h>
 #include <game.h>
 #include <timer.h>
-#include <buttonautotrigger.h>
 
 class Dodge : public Game
 {
@@ -79,13 +79,13 @@ private:
 	Timer* blink_timer_;
 	ButtonAutoTrigger* auto_move_;
 
-
 	byte speed_;
-	uint16_t readSpeed(const SpeedFlag flag);
+	uint16_t readSpeed(const SpeedFlag flag) const;
 	uint16_t score_;
 
 	bool dot_state_;
 	Pos pos_;
 	List<byte> elements_;
 	static uint16_t highscore_;
+	static uint16_t EE_highscore_ EEMEM;
 };

@@ -17,8 +17,8 @@
  */
 
 #pragma once
-#include <game.h>
 #include <buttonautotrigger.h>
+#include <game.h>
 #include <list.h>
 #include <staticlist.h>
 #include <timer.h>
@@ -35,22 +35,22 @@ public:
 class SpaceInvaders : public Game
 {
 public:
-	explicit SpaceInvaders(Display *display);
+	explicit SpaceInvaders(Display* display);
 
 	static void resetHighscore();
 	static unsigned int highscore() { return highscore_; }
 
 public:
 	// Game interface
-	void start(Event *event) override;
+	void start(Event* event) override;
 	void setSpeed(const byte v) override { speed_ = v; }
 	unsigned int score() const override { return score_; }
 
 protected:
-	bool onButtonChange(Event *event) override;
-	bool onTriggered(Event *event) override;
-	void onStop(Event *event) override;
-	void onContinue(Event *event) override;
+	bool onButtonChange(Event* event) override;
+	bool onTriggered(Event* event) override;
+	void onStop(Event* event) override;
+	void onContinue(Event* event) override;
 	void render() override;
 
 private:
@@ -60,18 +60,20 @@ private:
 
 	void left();
 	void right();
-	bool processShot(Shot &s);
+	bool processShot(Shot& s);
 	void insertRow();
 
 	// score
 	uint16_t score_ = 0;
 	static uint16_t highscore_;
+	static uint16_t EE_highscore_ EEMEM;
+
 	void updateHighscore(const byte offset = 0);
 
 	// timers
-	Timer *step_timer_;
-	Timer *shot_timer_;
-	ButtonAutoTrigger *auto_move_;
+	Timer* step_timer_;
+	Timer* shot_timer_;
+	ButtonAutoTrigger* auto_move_;
 
 	// speed
 	enum SpeedFlag

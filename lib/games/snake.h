@@ -17,9 +17,9 @@
  */
 
 #pragma once
+#include <Position/position.h>
 #include <game.h>
 #include <list.h>
-#include <Position/position.h>
 #include <staticlist.h>
 #include <timer.h>
 
@@ -83,4 +83,5 @@ private:
 
 	// highscore
 	static uint16_t highscore_;
+	static uint16_t EE_highscore_ EEMEM;
 };

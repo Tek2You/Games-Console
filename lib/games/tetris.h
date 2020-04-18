@@ -58,9 +58,9 @@ private:
 
 	bool newTetromino();
 	void takeOverTetromino();
-	
+
 	// field without current tetromino
-	StaticList<byte> field_; 
+	StaticList<byte> field_;
 	Tetromino tetromino_;
 
 	Timer* step_timer_;
@@ -79,8 +79,8 @@ private:
 	byte speed_;
 	uint16_t readSpeed(const SpeedFlag flag) const;
 
-
 	uint16_t points_ = 0;
+	static uint16_t EE_highscore_ EEMEM;
 	static uint16_t highscore_;
 
 	enum BlinkCycle
