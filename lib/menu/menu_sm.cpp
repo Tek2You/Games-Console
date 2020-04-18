@@ -71,14 +71,14 @@ MenuSM::MenuSM(Display* display, Event* event)
 		brightness_ = 3;
 	}
 	display->setBrightness(brightness_);
-	event->setOnEntry();
+	event->setEntry();
 	process(event);
 	event->clear();
 }
 
 void MenuSM::transition(Function function, Event* event, uint8_t entry) {
 	setState(static_cast<StateMachine<Event*>::State>(function));
-	event->setOnEntry(entry);
+	event->setEntry(entry);
 	event->clearProcessFlags();
 	this->StateMachine::process(event);
 }
@@ -350,7 +350,7 @@ void MenuSM::stateSettingsMenu(Event* event) {
 		}
 
 		if (event->buttonPressed(BUTTON_DOWN)) {
-			event->setOnEntry();
+			event->setEntry();
 			switch (item.value_) {
 				case 0:
 					TRANSITION(stateSpeedMenu, event, ForwardEntry);
@@ -495,7 +495,7 @@ void MenuSM::stateLoadEffect(Event* event) {
 					setState(load_following_state_);
 					load_following_state_ = nullptr;
 					event->clearProcessFlags();
-					event->setOnEntry(load_following_entry_mode_);
+					event->setEntry(load_following_entry_mode_);
 					process(event);
 				} else {
 					TRANSITION(stateDefault, event, ForwardEntry);
