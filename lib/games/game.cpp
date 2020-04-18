@@ -17,8 +17,8 @@
  * along with this library.  If not, see http://www.gnu.org/licenses/.
  */
 
-#include "game.h"
-#include "operators.h"
+#include <game.h>
+#include <operators.h>
 
 using namespace events;
 

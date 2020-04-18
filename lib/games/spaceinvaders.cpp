@@ -16,14 +16,14 @@
  * along with this library.  If not, see http://www.gnu.org/licenses/.
  */
 
-#include "spaceinvaders.h"
+#include <spaceinvaders.h>
 
 using namespace events;
 
 static uint16_t EE_highscore EEMEM = 0;
 uint16_t SpaceInvaders::highscore_ = eeprom_read_word(&EE_highscore);
 
-const uint16_t speeds[] PROGMEM = {
+static const uint16_t speeds[] PROGMEM = {
 	2000, 65, 400, 200,  // very slow
 	1600, 60, 400, 160,  // slow
 	1200, 45, 300, 140,  // medium fast

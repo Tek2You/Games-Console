@@ -17,10 +17,10 @@
  */
 
 #pragma once
-#include "avr.h"
-#include "game.h"
-#include "timer.h"
-#include "buttonautotrigger.h"
+#include <avr.h>
+#include <game.h>
+#include <timer.h>
+#include <buttonautotrigger.h>
 
 class Dodge : public Game
 {

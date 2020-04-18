@@ -17,12 +17,12 @@
  */
 
 #pragma once
-#include "avr.h"
-#include "buttonautotrigger.h"
-#include "display.h"
-#include "game.h"
-#include "staticlist.h"
-#include "tetromino.h"
+#include <avr.h>
+#include <buttonautotrigger.h>
+#include <display.h>
+#include <game.h>
+#include <staticlist.h>
+#include <tetromino.h>
 
 class Tetris : public Game
 {

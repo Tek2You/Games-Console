@@ -16,16 +16,16 @@
  * along with this library.  If not, see http://www.gnu.org/licenses/.
  */
 
-#include "tetris.h"
-#include "avr/eeprom.h"
-#include "operators.h"
+#include <tetris.h>
+#include <avr/eeprom.h>
+#include <operators.h>
 
 using namespace events;
 
-static uint16_t EE_highscore EEMEM = 0;
+uint16_t EE_highscore EEMEM = 0;
 uint16_t Tetris::highscore_ = eeprom_read_word(&EE_highscore);
 
-const int speeds[] PROGMEM = {
+static const int speeds[] PROGMEM = {
 	1800, 180, 400, 200, 80,  // very slow
 	1400, 140, 400, 160, 90,  // slow
 	1000, 100, 300, 140, 100, // medium fast
