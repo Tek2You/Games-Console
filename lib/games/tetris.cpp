@@ -20,7 +20,7 @@
 #include <operators.h>
 #include <tetris.h>
 
-using namespace events;
+using namespace event_handling;
 
 uint16_t Tetris::EE_highscore_ EEMEM = 0;
 uint16_t Tetris::highscore_ = eeprom_read_word(&EE_highscore_);
@@ -60,8 +60,8 @@ void Tetris::start(Event* event) {
 	event->addTrigger(step_timer_);
 	blink_timer_ = new Timer(readSpeed(BlinkInterval));
 	event->addTrigger(blink_timer_);
-	move_trigger_ = new ButtonAutoTrigger(event, events::BUTTON_LEFT, events::BUTTON_RIGHT, readSpeed(FirstMoveInterval),
-	                                      readSpeed(MoveInterval));
+	move_trigger_ =
+	    new ButtonAutoTrigger(event, BUTTON_LEFT, BUTTON_RIGHT, readSpeed(FirstMoveInterval), readSpeed(MoveInterval));
 	event->addTrigger(move_trigger_);
 
 	newTetromino();

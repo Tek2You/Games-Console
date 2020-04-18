@@ -17,9 +17,9 @@
  */
 
 #pragma once
-#include <statemachine.h>
 #include <event.h>
 #include <game.h>
+#include <statemachine.h>
 
 class Display;
 class MenuSM : public StateMachine<Event*>
@@ -29,7 +29,7 @@ public:
 	//	void processStateMaschine(Event *event);
 private:
 	typedef void (MenuSM::*Function)(Event*);
-	void transition(Function function, Event* event, events::EntryMode entry = events::ForwardEntry);
+	void transition(Function function, Event* event, uint8_t entry = event_handling::ForwardEntry);
 
 	bool processMenuStop(Event* event);
 	// states
@@ -58,9 +58,9 @@ private:
 	class MenuItem
 	{
 	public:
-		void init(char num, char initial, events::EntryMode entry = events::ForwardEntry) {
+		void init(char num, char initial, uint8_t entry = event_handling::ForwardEntry) {
 			num_ = num;
-			if (entry == events::ForwardEntry)
+			if (entry == event_handling::ForwardEntry)
 				value_ = initial;
 		}
 		void init(char num) { num_ = num; }
@@ -94,5 +94,5 @@ private:
 	// load effect
 	State load_following_state_;  // state load effect need a pointer to the state
 	                              // after its
-	events::EntryMode load_following_entry_mode_;
+	uint8_t load_following_entry_mode_;
 };

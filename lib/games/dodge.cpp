@@ -18,7 +18,7 @@
 
 #include <dodge.h>
 
-using namespace events;
+using namespace event_handling;
 
 uint16_t Dodge::EE_highscore_ EEMEM = 0;
 uint16_t Dodge::highscore_ = eeprom_read_word(&EE_highscore_);

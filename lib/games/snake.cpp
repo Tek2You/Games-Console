@@ -21,7 +21,7 @@
 #include <operators.h>
 #include <snake.h>
 
-using namespace events;
+using namespace event_handling;
 
 uint16_t Snake::EE_highscore_ EEMEM = 0;
 uint16_t Snake::highscore_ = eeprom_read_word(&EE_highscore_);

@@ -26,7 +26,7 @@
 #include <spaceinvaders.h>
 #include <tetris.h>
 
-using namespace events;
+using namespace event_handling;
 
 #undef TRANSITION
 #define TRANSITION(s, event, entry) transition(&MenuSM::s, event, entry)
@@ -76,10 +76,10 @@ MenuSM::MenuSM(Display* display, Event* event)
 	event->clear();
 }
 
-void MenuSM::transition(Function function, Event* event, events::EntryMode entry) {
+void MenuSM::transition(Function function, Event* event, uint8_t entry) {
 	setState(static_cast<StateMachine<Event*>::State>(function));
 	event->setOnEntry(entry);
-	event->triggerModes().clear();
+	event->clearProcessFlags();
 	this->StateMachine::process(event);
 }
 
@@ -122,7 +122,7 @@ void MenuSM::stateStartup(Event* event) {
 	static int count;
 	if (event->onEntry()) {
 		count = 0;
-		event->triggerModes().setFlag(GameMode);
+		event->setProcessFlag(GameMode);
 		event->addTrigger(new Timer(100));
 	} else if (event->buttonChanged(ANY_BUTTON)) {
 		TRANSITION(stateDefault, event, ForwardEntry);
@@ -241,7 +241,7 @@ void MenuSM::stateDefault(Event* event) {
 	if (event->onEntry()) {
 		item.init(6, 2, event->onEntry());
 		display_->loadMenuConfig();
-		event->triggerModes().setFlag(MenuMode);
+		event->setProcessFlag(MenuMode);
 	} else {
 		if (event->buttonPressed(BUTTON_DOWN)) {
 			switch (item.value_) {
@@ -290,7 +290,7 @@ void MenuSM::newGame(Event* event, Game::GameType game) {
 void MenuSM::stateGame(Event* event) {
 	if (event->onEntry()) {
 		display_->loadsGameCofig();
-		event->triggerModes().setFlag(GameMode);
+		event->setProcessFlag(GameMode);
 		game_->setSpeed(speed_);
 		game_->start(event);
 		return;
@@ -304,7 +304,7 @@ void MenuSM::stateGameOver(Event* event) {
 		LOAD_EFFECT_BEGIN(stateGameOver, event);
 		display_->loadsGameCofig();
 		if (game_ != nullptr) {
-			event->triggerModes().setFlag(MenuMode);
+			event->setProcessFlag(MenuMode);
 			display_->loadMenuConfig();
 			if (game_->type() == Game::SNAKE && game_->score() >= 124) {
 				display_->text1_.setText((language_ == EN ? "you got it!" : "Geschafft!"), false);
@@ -342,7 +342,7 @@ void MenuSM::stateSettingsMenu(Event* event) {
 	if (event->onEntry()) {
 		display_->loadMenuConfig();
 		item.init(3, 0, event->onEntry());
-		event->triggerModes().setFlag(MenuMode);
+		event->setProcessFlag(MenuMode);
 	} else  // not on entry
 	{
 		if (processMenuStop(event)) {
@@ -385,7 +385,7 @@ void MenuSM::stateSpeedMenu(Event* event) {
 	if (event->onEntry()) {
 		item.init(5, speed_);
 		display_->loadMenuConfig();
-		event->triggerModes().setFlag(GameMode);
+		event->setProcessFlag(GameMode);
 		event->addTrigger(new ButtonAutoTrigger(event, BUTTON_LEFT, BUTTON_RIGHT, 500, 300));
 	} else  // not on entry
 	{
@@ -418,7 +418,7 @@ void MenuSM::stateBrightnessMenu(Event* event) {
 	if (event->onEntry()) {
 		display_->loadMenuConfig();
 		item.init(4, brightness_);
-		event->triggerModes().setFlag(GameMode);
+		event->setProcessFlag(GameMode);
 		event->addTrigger(new ButtonAutoTrigger(event, BUTTON_LEFT, BUTTON_RIGHT, 500, 400));
 	} else  // not on entry
 	{
@@ -453,7 +453,7 @@ void MenuSM::stateLanguageMenu(Event* event) {
 	if (event->onEntry()) {
 		item.init(2, (language_ == DE ? 0 : 1));
 		display_->loadMenuConfig();
-		event->triggerModes().setFlag(MenuMode);
+		event->setProcessFlag(MenuMode);
 	} else  // not on entry
 	{
 		if (processMenuStop(event)) {
@@ -483,8 +483,8 @@ void MenuSM::stateLoadEffect(Event* event) {
 		count = 0;
 		display_->loadsGameCofig();
 		event->addTrigger(new Timer(12));
-		event->triggerModes().setFlag(ProcessTriggers);
-		event->triggerModes().setFlag(ProcessStop);
+		event->setProcessFlag(ProcessTriggers);
+		event->setProcessFlag(ProcessPinChanges);
 	} else {
 		if (processMenuStop(event)) {
 			return;
@@ -494,7 +494,7 @@ void MenuSM::stateLoadEffect(Event* event) {
 				if (load_following_state_) {
 					setState(load_following_state_);
 					load_following_state_ = nullptr;
-					event->triggerModes().clear();
+					event->clearProcessFlags();
 					event->setOnEntry(load_following_entry_mode_);
 					process(event);
 				} else {
@@ -516,7 +516,7 @@ void MenuSM::stateHighscoreMenu(Event* event) {
 
 	if (event->onEntry()) {
 		item.init(5, 1, event->onEntry());
-		event->triggerModes().setFlag(MenuMode);
+		event->setProcessFlag(MenuMode);
 	} else {
 		if (processMenuStop(event)) {
 			return;
@@ -575,7 +575,7 @@ void MenuSM::stateHighscoreMenu(Event* event) {
 void MenuSM::stateResetMenu(Event* event) {
 	if (event->onEntry()) {
 		display_->loadMenuConfig();
-		event->triggerModes().setFlag(MenuMode);
+		event->setProcessFlag(MenuMode);
 	} else {
 		if (processMenuStop(event)) {
 			return;

@@ -20,51 +20,42 @@
 #include <game.h>
 #include <operators.h>
 
-using namespace events;
+using namespace event_handling;
 
-Game::Game(Display *display, const GameType game_type)
-	: display_(display), game_type_(game_type), is_new_highscore_(false), stop_state_(false) {}
+Game::Game(Display* display, const GameType game_type)
+  : display_(display), game_type_(game_type), is_new_highscore_(false), stop_state_(false) {}
 
 Game::~Game() {}
 
-bool Game::process(Event *event)
-{
+bool Game::process(Event* event) {
 	/* Stop Button
 	 * Enable Stop directly after push
 	 * Disable Stop after released after second
 	 */
 
-	if (event->buttonChanged(BUTTON_STOP))
-	{
-		if (event->buttonState(BUTTON_STOP))
-		{
+	if (event->buttonChanged(BUTTON_STOP)) {
+		if (event->buttonState(BUTTON_STOP)) {
 			// first time pressed -> stop game
-			if (stop_state_)
-			{
+			if (stop_state_) {
 				event->triggers_.last()->restart();
-			}
-			else
+			} else
 			// second time pressed
 			{
 				stop_state_ = true;
 				onStop(event);
-				event->addTrigger(new Timer(500)); // add timer for reset game
+				event->addTrigger(new Timer(500));  // add timer for reset game
 			}
 			return false;
-		}
-		else
-		{
-			if (reset_count_)
-			{
+		} else {
+			if (reset_count_) {
 				// tryed to leave
 				reset_count_ = 0;
 				first_released_ = false;
 				display_->setRow(15, 0);
 				display_->show();
-				(static_cast<Timer *>(event->triggers_.last()))->setInterval(500);
+				(static_cast<Timer*>(event->triggers_.last()))->setInterval(500);
 			}
-			if (stop_state_)
-			{
+			if (stop_state_) {
 				first_released_ = !first_released_;
 				if (!first_released_)
 				// released second time
@@ -78,19 +69,15 @@ bool Game::process(Event *event)
 			}
 			return false;
 		}
-	}
-	else if (stop_state_)
-	{
-		Timer *timer = static_cast<Timer *>(event->triggers_.last());
-		if (timer->triggered() && event->buttonState(BUTTON_STOP))
-		{
+	} else if (stop_state_) {
+		Timer* timer = static_cast<Timer*>(event->triggers_.last());
+		if (timer->triggered() && event->buttonState(BUTTON_STOP)) {
 			timer->setInterval(200);
 			timer->restart();
 			display_->setPixel(reset_count_, 15);
 			display_->show();
 			reset_count_++;
-			if (reset_count_ >= 8)
-			{
+			if (reset_count_ >= 8) {
 				stop_state_ = false;
 				first_released_ = false;
 				reset_count_ = 0;
@@ -105,21 +92,18 @@ bool Game::process(Event *event)
 	byte output = false;
 
 	// check if processing is required
-	if (event->buttonChanged(ANY_BUTTON))
-	{
+	if (event->buttonChanged(ANY_BUTTON)) {
 		if (onButtonChange(event))
 			output = true;
 	}
-	if (event->triggered())
-	{
+	if (event->triggered()) {
 		if (onTriggered(event))
 			output = true;
 	}
 	return output;
 }
 
-void Game::onStop(Event *event)
-{
+void Game::onStop(Event* event) {
 	display_->clear();
 	display_->text1_.setOffset(0);
 	display_->text1_.setNumber(this->score(), false);
@@ -127,24 +111,20 @@ void Game::onStop(Event *event)
 	display_->show();
 }
 
-void Game::onContinue(Event *event)
-{
+void Game::onContinue(Event* event) {
 	display_->text1_.clear();
 	render();
 }
 
-bool Game::onButtonChange(Event *event)
-{
+bool Game::onButtonChange(Event* event) {
 	return false;
 }
 
-bool Game::onTriggered(Event *event)
-{
+bool Game::onTriggered(Event* event) {
 	return false;
 }
 
-extern "C" void __cxa_pure_virtual()
-{
+extern "C" void __cxa_pure_virtual() {
 	while (1)
 		;
 }
