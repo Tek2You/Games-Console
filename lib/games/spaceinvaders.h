@@ -18,7 +18,6 @@
 
 #pragma once
 #include <game.h>
-
 #include <buttonautotrigger.h>
 #include <list.h>
 #include <staticlist.h>
