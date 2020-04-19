@@ -97,9 +97,9 @@ bool Snake::onButtonChange(Event* event) {
 	// avoid quick jumping of the snake.
 	// if the time passed since the last move forward is too smal
 	// accept the position but do not move again
-	if (timer_->triggered() ||
-	    timer_->nextTime() - timer_->interval() + (pgm_read_word(&periods[speed_]) / 3) < millis())
+	if (timer_->triggered() || (timer_->nextTime() - (timer_->interval() / 2)) > millis()) {
 		return false;
+	}
 	timer_->restart();
 	return tick();
 }
